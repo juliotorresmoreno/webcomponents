@@ -36,11 +36,13 @@ module.exports = {
             },
             {
                 test: /(\.js|\.jsx)$/,
-                use: [{
-                    loader: 'babel-loader'
-                }, {
-                    loader: 'virtual-dom-loader?jsx=h'
-                }]
+                loader: "babel-loader",
+                query: {
+                  plugins: [
+                    ["transform-h-jsx"],
+                    ["syntax-jsx"]
+                  ]
+                }
             },
             {
                 test: /\.ts$/,

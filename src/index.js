@@ -1,6 +1,4 @@
 import h from 'h';
-import app from './components/app';
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'bootstrap/dist/js/bootstrap.min';
+import App from './components/App';
 
-document.querySelector('#root').appendChild(<app />);
+document.querySelector('#root').appendChild(<App />);
