@@ -22,7 +22,6 @@
         "css-loader": "^0.28.7",
         "esprima-fb": "^15001.1001.0-dev-harmony-fb",
         "fs": "^0.0.1-security",
-        "h": "^0.1.0",
         "jstransform": "^11.0.3",
         "jsx-loader": "^0.13.2",
         "net": "^1.0.2",
@@ -46,6 +45,7 @@
     },
     "dependencies": {
         "axios": "^0.17.0",
-        "custom-elements": "^1.0.2"
+        "custom-elements": "^1.0.2",
+        "virtual-dom": "^2.1.1"
     }
 }

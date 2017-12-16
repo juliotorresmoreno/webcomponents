@@ -1,5 +1,4 @@
 
-import h from 'h';
 
 export default function Menu() {
     return (

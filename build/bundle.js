@@ -60,183 +60,244 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-;(function () {
+"use strict";
 
-  function h() {
-    var args = [].slice.call(arguments),
-        e = null;
-    function item(l) {
-
-      function parseClass(string) {
-        var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/);
-        m.forEach(function (v) {
-          var s = v.substring(1, v.length);
-          if (!v) return;
-          if (!e) e = document.createElement(v);else if (v[0] === '.') e.classList.add(s);else if (v[0] === '#') e.setAttribute('id', s);
-        });
-      }
-
-      if (l == null) ;else if ('string' === typeof l) {
-        if (!e) parseClass(l);else e.appendChild(document.createTextNode(l));
-      } else if ('number' === typeof l || 'boolean' === typeof l || l instanceof Date || l instanceof RegExp) {
-        e.appendChild(document.createTextNode(l.toString()));
-      } else if (Array.isArray(l)) l.forEach(item);else if (l instanceof HTMLElement) e.appendChild(l);else if ('function' === typeof l) {
-        if (l.toString().indexOf('class') === 0) {
-          e = new l(args[0]).render();
+let waiting = [];
+let elements = [];
+const ready = () => {
+    const rest = [];
+    while (waiting.length > 0) {
+        const element = waiting.shift();
+        if (document.body === element.DOM || document.body.contains(element.DOM)) {
+            element.ready();
+            elements.push(element);
         } else {
-          e = l(args[0]);
+            rest.push(element);
         }
-      } else if ('object' === typeof l) {
-        for (var k in l) {
-          if ('function' === typeof l[k]) e.addEventListener(k, l[k]);else if (k === 'style') {
-            for (var s in l[k]) e.style.setProperty(s, l[k][s]);
-          } else e.setAttribute(k, l[k]);
-        }
-      }
     }
-    while (args.length) {
-      item(args.shift());
-    }
-    return e;
-  }
+    waiting = rest;
+};
 
-  if (true) module.exports = h;else this.h = h;
-})();
+const dispatchEvent = action => {
+    for (let index = 0; index < elements.length; index++) {
+        const element = elements[index];
+        element.dispatch(action);
+    }
+};
+
+const state = {};
+
+class Core {
+    constructor(props, newState = {}) {
+        for (const key in newState) {
+            if (newState.hasOwnProperty(key)) {
+                state[key] = newState[key];
+            }
+        }
+        this.state = state;
+        this.props = props;
+        waiting.push(this);
+    }
+    ready() {}
+    componentWillMount() {}
+    apply(element) {
+        element.appendChild(this.renderComponent());
+        ready();
+    }
+    dispatch() {}
+    dispatchEvent(action) {
+        dispatchEvent(action);
+    }
+    update() {
+        if (document.body === this.DOM || document.body.contains(this.DOM)) {
+            const newTree = this.render();
+            this.DOM.parentNode.replaceChild(newTree, this.DOM);
+            this.DOM = newTree;
+        }
+    }
+    renderComponent() {
+        this.componentWillMount();
+        return this.DOM = this.render();
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Core;
+
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_h__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_App__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(7);
 
 
-
-document.querySelector('#root').appendChild(__WEBPACK_IMPORTED_MODULE_0_h___default()(
-  __WEBPACK_IMPORTED_MODULE_1__components_App__["a" /* default */],
-  null,
-  []
-));
+const app = new __WEBPACK_IMPORTED_MODULE_0__components_App__["a" /* default */]();
+app.apply(document.querySelector('#root'));
 
 /***/ }),
-/* 2 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = App;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_h__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__(23);
 
 
 
 
-const state = {
-    title: 'uno'
-};
 
-function App() {
-    return __WEBPACK_IMPORTED_MODULE_0_h___default()(
-        'div',
-        { 'class': '' },
-        [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-            __WEBPACK_IMPORTED_MODULE_1__Toolbar__["a" /* default */],
-            { state: state },
-            []
-        ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-            __WEBPACK_IMPORTED_MODULE_2__Body__["a" /* default */],
-            null,
-            []
-        )]
-    );
-};
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_h__);
-
-
-//h.registerElements.toolbar
-class Toolbar {
+class App extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
     constructor(props) {
-        this.props = props;
+        super(props, __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */]);
     }
     render() {
+        return h(
+            'div',
+            { 'class': '' },
+            [h(
+                __WEBPACK_IMPORTED_MODULE_1__Toolbar__["a" /* default */],
+                { state: __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */] },
+                []
+            ), h(
+                __WEBPACK_IMPORTED_MODULE_2__Body__["a" /* default */],
+                null,
+                []
+            )]
+        );
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = App;
+;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
+
+
+const handleAdd = that => e => {
+    e.preventDefault();
+    if (that.state.neuronas === 10) return;
+    that.state.neuronas++;
+    that.dispatchEvent({ type: '@neuronas/change' });
+};
+
+const handleRemove = that => e => {
+    e.preventDefault();
+    if (that.state.neuronas === 1) return;
+    that.state.neuronas--;
+    that.dispatchEvent({ type: '@neuronas/change' });
+};
+
+class Toolbar extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
+    constructor(props) {
+        super(props);
+        this.handleAdd = handleAdd(this);
+        this.handleRemove = handleRemove(this);
+    }
+
+    render() {
         const { props } = this;
-        return __WEBPACK_IMPORTED_MODULE_0_h___default()(
-            "nav",
-            { "class": "navbar navbar-expand-lg navbar-dark bg-primary" },
-            [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                "a",
-                { "class": "navbar-brand", href: "#" },
+        return h(
+            'nav',
+            { 'class': 'navbar navbar-expand-lg navbar-dark bg-primary' },
+            [h(
+                'a',
+                { 'class': 'navbar-brand', href: '#' },
                 [props.state.title]
-            ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                "button",
+            ), h(
+                'button',
                 {
-                    "class": "navbar-toggler",
-                    type: "button", "data-toggle": "collapse",
-                    "data-target": "#navbarSupportedContent",
-                    "aria-controls": "navbarSupportedContent",
-                    "aria-expanded": "false",
-                    "aria-label": "Toggle navigation" },
-                [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                    "span",
-                    { "class": "navbar-toggler-icon" },
+                    'class': 'navbar-toggler',
+                    type: 'button', 'data-toggle': 'collapse',
+                    'data-target': '#navbarSupportedContent',
+                    'aria-controls': 'navbarSupportedContent',
+                    'aria-expanded': 'false',
+                    'aria-label': 'Toggle navigation' },
+                [h(
+                    'span',
+                    { 'class': 'navbar-toggler-icon' },
                     []
                 )]
-            ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                "div",
-                { "class": "collapse navbar-collapse", id: "navbarSupportedContent" },
-                [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                    "ul",
-                    { "class": "navbar-nav ml-auto" },
-                    [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                        "li",
-                        { "class": "nav-item dropdown" },
-                        [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                            "a",
+            ), h(
+                'div',
+                { 'class': 'collapse navbar-collapse', id: 'navbarSupportedContent' },
+                [h(
+                    'ul',
+                    { 'class': 'navbar-nav mr-auto' },
+                    [h(
+                        'li',
+                        { 'class': 'nav-item' },
+                        [h(
+                            'a',
                             {
-                                "class": "nav-link dropdown-toggle",
-                                href: "#", id: "navbarDropdown",
-                                role: "button",
-                                "data-toggle": "dropdown",
-                                "aria-haspopup": "true",
-                                "aria-expanded": "false" },
-                            ["Dropdown"]
-                        ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                            "div",
-                            { "class": "dropdown-menu dropdown-menu-right", "aria-labelledby": "navbarDropdown" },
-                            [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                                "a",
-                                { "class": "dropdown-item", href: "#", click: () => console.log('sd') },
-                                ["Action"]
-                            ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                                "a",
-                                { "class": "dropdown-item", href: "#" },
-                                ["Another action"]
-                            ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                                "div",
-                                { "class": "dropdown-divider" },
+                                'class': 'nav-link', href: '',
+                                click: this.handleAdd },
+                            ['Agregar']
+                        )]
+                    ), h(
+                        'li',
+                        { 'class': 'nav-item' },
+                        [h(
+                            'a',
+                            {
+                                'class': 'nav-link', href: '',
+                                click: this.handleRemove },
+                            ['Eliminar']
+                        )]
+                    )]
+                ), h(
+                    'ul',
+                    { 'class': 'navbar-nav ml-auto' },
+                    [h(
+                        'li',
+                        { 'class': 'nav-item dropdown' },
+                        [h(
+                            'a',
+                            {
+                                'class': 'nav-link dropdown-toggle',
+                                href: '#', id: 'navbarDropdown',
+                                role: 'button',
+                                'data-toggle': 'dropdown',
+                                'aria-haspopup': 'true',
+                                'aria-expanded': 'false' },
+                            ['Dropdown']
+                        ), h(
+                            'div',
+                            { 'class': 'dropdown-menu dropdown-menu-right', 'aria-labelledby': 'navbarDropdown' },
+                            [h(
+                                'a',
+                                { 'class': 'dropdown-item', href: '#', click: () => console.log('sd') },
+                                ['Action']
+                            ), h(
+                                'a',
+                                { 'class': 'dropdown-item', href: '#' },
+                                ['Another action']
+                            ), h(
+                                'div',
+                                { 'class': 'dropdown-divider' },
                                 []
-                            ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-                                "a",
-                                { "class": "dropdown-item", href: "#" },
-                                ["Something else here"]
+                            ), h(
+                                'a',
+                                { 'class': 'dropdown-item', href: '#' },
+                                ['Something else here']
                             )]
                         )]
                     )]
@@ -249,59 +310,57 @@ class Toolbar {
 ;
 
 /***/ }),
-/* 4 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = Body;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_h___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_h__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__index_scss__);
 
-//import Menu from "../Menu";
 
 
-function Body() {
-    const grid = __WEBPACK_IMPORTED_MODULE_0_h___default()(
-        'div',
-        { 'class': 'grid' },
-        [__WEBPACK_IMPORTED_MODULE_0_h___default()(
+class Body extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
+    dispatch(action) {
+        this.update();
+    }
+    render() {
+        const length = this.state.neuronas;
+        const width = 100 / (length + 2) + '%';
+        const columns = [];
+        for (let index = 0; index < length; index++) {
+            columns.push(index);
+        }
+        return h(
             'div',
-            { 'class': 'item' },
-            [__WEBPACK_IMPORTED_MODULE_0_h___default()(
+            { 'class': 'grid', style: { padding: '20px' } },
+            [h(
                 'div',
-                { 'class': 'item-content' },
-                ['This can be anything.']
-            )]
-        ), __WEBPACK_IMPORTED_MODULE_0_h___default()(
-            'div',
-            { 'class': 'item' },
-            [__WEBPACK_IMPORTED_MODULE_0_h___default()(
+                { 'class': 'column', style: { width } },
+                ['Entradas']
+            ), columns.map(v => h(
                 'div',
-                { 'class': 'item-content' },
-                [__WEBPACK_IMPORTED_MODULE_0_h___default()(
-                    'div',
-                    { 'class': 'my-custom-content' },
-                    ['Yippee!']
-                )]
+                { 'class': 'column', style: { width } },
+                [v]
+            )), h(
+                'div',
+                { 'class': 'column', style: { width } },
+                ['Salida']
             )]
-        )]
-    );
-    setTimeout(() => {
-        console.log(new Muuri('.grid'));
-    }, 1000);
-    return grid;
-};
+        );
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Body);
 
 /***/ }),
-/* 5 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(6);
+var content = __webpack_require__(11);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -309,7 +368,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(8)(content, options);
+var update = __webpack_require__(13)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -326,21 +385,21 @@ if(false) {
 }
 
 /***/ }),
-/* 6 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(7)(undefined);
+exports = module.exports = __webpack_require__(12)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".grid {\n  position: relative; }\n\n.item {\n  display: block;\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  margin: 5px;\n  z-index: 1;\n  background: #000;\n  color: #fff; }\n\n.item.muuri-item-dragging {\n  z-index: 3; }\n\n.item.muuri-item-releasing {\n  z-index: 2; }\n\n.item.muuri-item-hidden {\n  z-index: 0; }\n\n.item-content {\n  position: relative;\n  width: 100%;\n  height: 100%; }\n", ""]);
+exports.push([module.i, ".column {\n  display: inline-block;\n  border: 1px solid #CCC; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 7 */
+/* 12 */
 /***/ (function(module, exports) {
 
 /*
@@ -419,7 +478,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 8 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -475,7 +534,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(9);
+var	fixUrls = __webpack_require__(14);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -791,7 +850,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 9 */
+/* 14 */
 /***/ (function(module, exports) {
 
 
@@ -882,6 +941,26 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+/***/ }),
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    title: 'Neuronal',
+    neuronas: 4
+});
 
 /***/ })
 /******/ ]);

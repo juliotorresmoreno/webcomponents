@@ -1,4 +1,4 @@
-import h from 'h';
 import App from './components/App';
 
-document.querySelector('#root').appendChild(<App />);
+const app = new App();
+app.apply(document.querySelector('#root'));

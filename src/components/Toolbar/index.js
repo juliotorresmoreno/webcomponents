@@ -1,11 +1,28 @@
-import h from 'h';
+import Core from "../../core";
 
+const handleAdd = (that) => (e) => {
+    e.preventDefault();
+    if (that.state.neuronas === 10)
+        return;
+    that.state.neuronas++;
+    that.dispatchEvent({type: '@neuronas/change'});
+}
 
-//h.registerElements.toolbar
-export default class Toolbar {
+const handleRemove = (that) => (e) => {
+    e.preventDefault();
+    if (that.state.neuronas === 1)
+        return;
+    that.state.neuronas--;
+    that.dispatchEvent({type: '@neuronas/change'});
+}
+
+export default class Toolbar extends Core {
     constructor(props) {
-        this.props = props;
+        super(props);
+        this.handleAdd = handleAdd(this);
+        this.handleRemove = handleRemove(this);
     }
+    
     render() {
         const {props} = this;
         return (
@@ -24,6 +41,22 @@ export default class Toolbar {
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link" href=""
+                            click={this.handleAdd}>
+                            Agregar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a 
+                            class="nav-link" href="" 
+                            click={this.handleRemove}>
+                            Eliminar
+                        </a>
+                    </li>
+                </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item dropdown">
                             <a 
