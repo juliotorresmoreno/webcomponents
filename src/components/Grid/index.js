@@ -4,41 +4,36 @@ import './index.scss';
 import neuronas from "./neuronas";
 import actions from "../../actions";
 
-const handleAdd = (that) => (e) => {
-    e.preventDefault();
-    that.state.capas.push({neuronas: 3});
-    that.dispatchEvent({type: actions.neuronas.change});
-}
-
-const handleRemove = (that) => (e) => {
-    e.preventDefault();
-    const index = e.target.dataset.tag;
-    if (that.state.capas.length === 1)
-        return;
-    that.state.capas.splice(index, 1);
-    that.dispatchEvent({type: actions.neuronas.change});
-}
+let that;
 
 class Grid extends Core {
     constructor(props) {
         super(props);
-        this.handleAdd = handleAdd(this);
-        this.handleRemove = handleRemove(this);
+        this.subscribe = {
+            [actions.neuronas.change]: true
+        };
+        that = this;
     }
-    dispatch(action) {
-        switch(action.type) {
-            case actions.neuronas.change:
-                this.update();
-                break;
-        }
+    handleAdd() {
+        that.services.neuronal.add();
+    }
+    handleRemove(e) {
+        e.preventDefault();
+        const index = e.target.dataset.tag;
+        that.services.neuronal.remove(index);
     }
     handleNeuronasChange(capa) {
-        const that = this;
         return ({target: {value}}) => {
-            that.state.capas[capa].neuronas = value;
+            that.services.neuronal.neuronasUpdate(capa, value);
+        }
+    }
+    handleAlgoritmoChange(capa) {
+        return ({target: {value}}) => {
+            that.services.neuronal.algoritmoUpdate(capa, value);
         }
     }
     ready() {
+        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => (
             <div class="card item" style={{display: 'inline-block'}}>
                 <div class="card-body">
@@ -53,7 +48,7 @@ class Grid extends Core {
                                 No. neuronas
                             </label>
                             <input 
-                                class="form-control"
+                                class="form-control" min={1}
                                 value={v.neuronas} type='number'
                                 change={this.handleNeuronasChange(i)} />
                         </div>
@@ -61,7 +56,9 @@ class Grid extends Core {
                             <label style={{display: 'block'}}>
                                 Algoritmo
                             </label>
-                            <select class="form-control">
+                            <select
+                                class="form-control" value={v.algoritmo}
+                                change={this.handleAlgoritmoChange(i)}>
                                 {neuronas.map((v) => (
                                     <option value={v}>{v}</option>
                                 ))}

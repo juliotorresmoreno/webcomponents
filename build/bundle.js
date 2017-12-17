@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -89,10 +89,11 @@ const dispatchEvent = action => {
     for (let index = 0; index < elements.length; index++) {
         const element = elements[index];
         element.dispatch(action);
+        element.compareAndRefresc(action);
     }
 };
 
-const actions = {};
+const services = {};
 const state = {};
 
 class Core {
@@ -104,11 +105,21 @@ class Core {
         }
         this.state = state;
         this.props = props;
-        this.actions = actions;
+        this.services = services;
+        this.subscribe = {};
         waiting.push(this);
     }
     ready() {}
     componentWillMount() {}
+    compareAndRefresc(action) {
+        if (Object.keys(this.subscribe) === 0) return;
+        for (let index = 0; index < action.types.length; index++) {
+            if (this.subscribe[action.types[index]]) {
+                this.update();
+                return;
+            }
+        }
+    }
     apply(element) {
         element.appendChild(this.renderComponent());
         ready();
@@ -135,6 +146,9 @@ class Core {
         this.componentWillMount();
         return this.DOM = this.render();
     }
+    render() {
+        return null;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Core;
 
@@ -145,7 +159,7 @@ class Core {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_classnames__);
 
 
@@ -294,38 +308,50 @@ class Menu extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(3);
-
-
-const app = new __WEBPACK_IMPORTED_MODULE_0__components_App__["a" /* default */]();
-app.apply(document.querySelector('#root'));
+/* harmony default export */ __webpack_exports__["a"] = ({
+    neuronas: {
+        change: "@neuronas/change"
+    }
+});
 
 /***/ }),
 /* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(4);
+
+
+const app = new __WEBPACK_IMPORTED_MODULE_0__components_App__["a" /* default */]();
+app.apply(document.querySelector('#root'));
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Services__ = __webpack_require__(15);
 
 
 
 
 
 class App extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
-    constructor(props) {
-        super(props, __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */]);
-    }
     render() {
         return h(
             'div',
             { 'class': '' },
             [h(
+                __WEBPACK_IMPORTED_MODULE_3__Services__["a" /* default */],
+                null,
+                []
+            ), h(
                 __WEBPACK_IMPORTED_MODULE_1__Toolbar__["a" /* default */],
-                { state: __WEBPACK_IMPORTED_MODULE_3__store__["a" /* default */] },
+                null,
                 []
             ), h(
                 __WEBPACK_IMPORTED_MODULE_2__Body__["a" /* default */],
@@ -339,7 +365,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 ;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -348,14 +374,13 @@ class App extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 
 class Toolbar extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
     render() {
-        const { props } = this;
         return h(
             "nav",
             { "class": "navbar navbar-expand-lg navbar-dark bg-primary" },
             [h(
                 "a",
                 { "class": "navbar-brand", href: "#" },
-                [props.state.title]
+                [this.state.title]
             ), h(
                 "button",
                 {
@@ -422,12 +447,12 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 ;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Menu__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Grid__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Grid__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core__ = __webpack_require__(0);
 
 
@@ -454,7 +479,7 @@ class Body extends __WEBPACK_IMPORTED_MODULE_2__core__["a" /* default */] {
 /* harmony default export */ __webpack_exports__["a"] = (Body);
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -508,57 +533,53 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 })();
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Menu__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__neuronas__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__neuronas__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__neuronas___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__neuronas__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__actions__ = __webpack_require__(2);
 
 
 
 
 
 
-const handleAdd = that => e => {
-    e.preventDefault();
-    that.state.capas.push({ neuronas: 3 });
-    that.dispatchEvent({ type: __WEBPACK_IMPORTED_MODULE_4__actions__["a" /* default */].neuronas.change });
-};
-
-const handleRemove = that => e => {
-    e.preventDefault();
-    const index = e.target.dataset.tag;
-    if (that.state.capas.length === 1) return;
-    that.state.capas.splice(index, 1);
-    that.dispatchEvent({ type: __WEBPACK_IMPORTED_MODULE_4__actions__["a" /* default */].neuronas.change });
-};
+let that;
 
 class Grid extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
     constructor(props) {
         super(props);
-        this.handleAdd = handleAdd(this);
-        this.handleRemove = handleRemove(this);
+        this.subscribe = {
+            [__WEBPACK_IMPORTED_MODULE_4__actions__["a" /* default */].neuronas.change]: true
+        };
+        that = this;
     }
-    dispatch(action) {
-        switch (action.type) {
-            case __WEBPACK_IMPORTED_MODULE_4__actions__["a" /* default */].neuronas.change:
-                this.update();
-                break;
-        }
+    handleAdd() {
+        that.services.neuronal.add();
+    }
+    handleRemove(e) {
+        e.preventDefault();
+        const index = e.target.dataset.tag;
+        that.services.neuronal.remove(index);
     }
     handleNeuronasChange(capa) {
-        const that = this;
         return ({ target: { value } }) => {
-            that.state.capas[capa].neuronas = value;
+            that.services.neuronal.neuronasUpdate(capa, value);
+        };
+    }
+    handleAlgoritmoChange(capa) {
+        return ({ target: { value } }) => {
+            that.services.neuronal.algoritmoUpdate(capa, value);
         };
     }
     ready() {
+        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => h(
             "div",
             { "class": "card item", style: { display: 'inline-block' } },
@@ -584,7 +605,7 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
                         ), h(
                             "input",
                             {
-                                "class": "form-control",
+                                "class": "form-control", min: 1,
                                 value: v.neuronas, type: "number",
                                 change: this.handleNeuronasChange(i) },
                             []
@@ -598,7 +619,9 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
                             ["Algoritmo"]
                         ), h(
                             "select",
-                            { "class": "form-control" },
+                            {
+                                "class": "form-control", value: v.algoritmo,
+                                change: this.handleAlgoritmoChange(i) },
                             [__WEBPACK_IMPORTED_MODULE_3__neuronas___default.a.map(v => h(
                                 "option",
                                 { value: v },
@@ -656,13 +679,13 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
 /* harmony default export */ __webpack_exports__["a"] = (Grid);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(9);
+var content = __webpack_require__(10);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -670,7 +693,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(11)(content, options);
+var update = __webpack_require__(12)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -687,10 +710,10 @@ if(false) {
 }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(10)(undefined);
+exports = module.exports = __webpack_require__(11)(undefined);
 // imports
 
 
@@ -701,7 +724,7 @@ exports.push([module.i, ".grid {\n  position: relative; }\n\n.item {\n  display:
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 /*
@@ -780,7 +803,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -836,7 +859,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(12);
+var	fixUrls = __webpack_require__(13);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1152,7 +1175,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 
@@ -1245,24 +1268,77 @@ module.exports = function (css) {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = ["all_candidate_sampler","atrous_conv2d","atrous_conv2d_transpose","avg_pool","avg_pool3d","batch_norm_with_global_normalization","batch_normalization","bias_add","bidirectional_dynamic_rnn","compute_accidental_hits","conv1d","conv2d","conv2d_backprop_filter","conv2d_backprop_input","conv2d_transpose","conv3d","conv3d_backprop_filter_v2","conv3d_transpose","convolution","crelu","ctc_beam_search_decoder","ctc_greedy_decoder","ctc_loss","depthwise_conv2d","depthwise_conv2d_native","depthwise_conv2d_native_backprop_filter","depthwise_conv2d_native_backprop_input","dilation2d","dropout","dynamic_rnn","elu","embedding_lookup","embedding_lookup_sparse","erosion2d","fixed_unigram_candidate_sampler","fractional_avg_pool","fractional_max_pool","fused_batch_norm","in_top_k","l2_loss","l2_normalize","leaky_relu","learned_unigram_candidate_sampler","local_response_normalization","log_poisson_loss","log_softmax","log_uniform_candidate_sampler","lrn","max_pool","max_pool3d","max_pool_with_argmax","moments","nce_loss","normalize_moments","pool","quantized_avg_pool","quantized_conv2d","quantized_max_pool","quantized_relu_x","raw_rnn","relu","relu6","relu_layer","sampled_softmax_loss","selu","separable_conv2d","sigmoid","softmax","softplus","softsign","static_bidirectional_rnn","static_rnn","static_state_saving_rnn","sufficient_statistics","tanh","top_k","uniform_candidate_sampler","weighted_moments","with_space_to_batch","xw_plus_b","zero_fraction"]
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    neuronas: {
-        change: "@neuronas/change"
-    }
-});
+/* harmony export (immutable) */ __webpack_exports__["a"] = Services;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_neuronal__ = __webpack_require__(16);
+
+
+function Services() {
+    return [h(
+        __WEBPACK_IMPORTED_MODULE_0__services_neuronal__["a" /* default */],
+        null,
+        []
+    )];
+}
 
 /***/ }),
-/* 15 */
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__(17);
+
+
+
+
+class Neuronal extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
+    constructor(props) {
+        super(props, __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */]);
+        this.services.neuronal = this;
+    }
+
+    add() {
+        this.state.capas.push({
+            neuronas: 3,
+            algoritmo: ''
+        });
+        this.dispatchEvent({
+            types: [__WEBPACK_IMPORTED_MODULE_1__actions__["a" /* default */].neuronas.change]
+        });
+    }
+
+    remove(index) {
+        if (this.state.capas.length === 1) return;
+        this.state.capas.splice(index, 1);
+        this.dispatchEvent({
+            types: [__WEBPACK_IMPORTED_MODULE_1__actions__["a" /* default */].neuronas.change]
+        });
+    }
+
+    neuronasUpdate(index, value) {
+        this.state.capas[index].neuronas = value;
+    }
+
+    algoritmoUpdate(index, value) {
+        this.state.capas[index].algoritmo = value;
+    }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (Neuronal);
+
+/***/ }),
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

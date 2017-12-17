@@ -2,11 +2,10 @@ import Core from "../../core";
 
 export default class Toolbar extends Core {    
     render() {
-        const {props} = this;
         return (
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <a class="navbar-brand" href="#">
-                    {props.state.title}
+                    {this.state.title}
                 </a>
                 <button 
                     class="navbar-toggler" 

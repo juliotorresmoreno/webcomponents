@@ -19,10 +19,11 @@ const dispatchEvent = (action) => {
     for (let index = 0; index < elements.length; index++) {
         const element = elements[index];
         element.dispatch(action);
+        element.compareAndRefresc(action);
     }
 }
 
-const actions = {};
+const services = {};
 const state = {};
 
 export default class Core {
@@ -34,14 +35,24 @@ export default class Core {
         }
         this.state = state;
         this.props = props;
-        this.actions = actions;
+        this.services = services;
+        this.subscribe = {};
         waiting.push(this);
     }
     ready() {
 
     }
     componentWillMount() {
-
+    }
+    compareAndRefresc(action) {
+        if (Object.keys(this.subscribe) === 0)
+            return;
+        for (let index = 0; index < action.types.length; index++) {
+            if (this.subscribe[action.types[index]]) {
+                this.update();
+                return;
+            }            
+        }
     }
     apply(element) {
         element.appendChild(this.renderComponent());
@@ -70,5 +81,8 @@ export default class Core {
     renderComponent() {
         this.componentWillMount();
         return this.DOM = this.render();
+    }
+    render() {
+        return null;
     }
 }

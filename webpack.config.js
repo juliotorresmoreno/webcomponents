@@ -3,6 +3,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+    context: path.join(__dirname, '/'),
     entry: "./src/index.js",
     devtool: 'source-map',
     output: {
@@ -11,7 +12,14 @@ module.exports = {
     },
     plugins: [
         //new CleanWebpackPlugin(['build']),
-        new CopyWebpackPlugin([{ from: 'public', to: 'build/' }])
+        new CopyWebpackPlugin([{
+            from: 'public/index.html',
+            to: 'build/'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/js/h/index.js',
+            to: 'build/js/h'
+        }])
     ],
     devServer: {
         contentBase: path.join(__dirname, "build"),
@@ -22,8 +30,10 @@ module.exports = {
         watchContentBase: true
     },
     module: {
-        loaders: [
-            { test: /\.css$/, loader: "css-loader" },
+        loaders: [{
+                test: /\.css$/,
+                loader: "css-loader"
+            },
             {
                 test: /\.scss$/,
                 use: [{
@@ -38,10 +48,10 @@ module.exports = {
                 test: /(\.js|\.jsx)$/,
                 loader: "babel-loader",
                 query: {
-                  plugins: [
-                    ["transform-h-jsx"],
-                    ["syntax-jsx"]
-                  ]
+                    plugins: [
+                        ["transform-h-jsx"],
+                        ["syntax-jsx"]
+                    ]
                 }
             },
             {
