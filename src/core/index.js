@@ -22,6 +22,7 @@ const dispatchEvent = (action) => {
     }
 }
 
+const actions = {};
 const state = {};
 
 export default class Core {
@@ -33,6 +34,7 @@ export default class Core {
         }
         this.state = state;
         this.props = props;
+        this.actions = actions;
         waiting.push(this);
     }
     ready() {
@@ -56,6 +58,13 @@ export default class Core {
             const newTree = this.render();
             this.DOM.parentNode.replaceChild(newTree, this.DOM);
             this.DOM = newTree;
+            this.ready();
+        }
+    }
+    updateElement(oldElement, newElement) {
+        if (document.body === this.DOM || document.body.contains(this.DOM)) {
+            oldElement.parentNode.replaceChild(newElement, this.DOM);
+            this.ready();
         }
     }
     renderComponent() {

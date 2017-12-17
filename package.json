@@ -45,6 +45,7 @@
     },
     "dependencies": {
         "axios": "^0.17.0",
+        "classnames": "^2.2.5",
         "custom-elements": "^1.0.2",
         "virtual-dom": "^2.1.1"
     }

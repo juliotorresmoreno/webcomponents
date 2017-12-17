@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -92,6 +92,7 @@ const dispatchEvent = action => {
     }
 };
 
+const actions = {};
 const state = {};
 
 class Core {
@@ -103,6 +104,7 @@ class Core {
         }
         this.state = state;
         this.props = props;
+        this.actions = actions;
         waiting.push(this);
     }
     ready() {}
@@ -120,6 +122,13 @@ class Core {
             const newTree = this.render();
             this.DOM.parentNode.replaceChild(newTree, this.DOM);
             this.DOM = newTree;
+            this.ready();
+        }
+    }
+    updateElement(oldElement, newElement) {
+        if (document.body === this.DOM || document.body.contains(this.DOM)) {
+            oldElement.parentNode.replaceChild(newElement, this.DOM);
+            this.ready();
         }
     }
     renderComponent() {
@@ -131,31 +140,26 @@ class Core {
 
 
 /***/ }),
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(2);
 
 
 const app = new __WEBPACK_IMPORTED_MODULE_0__components_App__["a" /* default */]();
 app.apply(document.querySelector('#root'));
 
 /***/ }),
-/* 7 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Toolbar__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Body__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__store__ = __webpack_require__(11);
 
 
 
@@ -185,119 +189,77 @@ class App extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 ;
 
 /***/ }),
-/* 8 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
 
 
-const handleAdd = that => e => {
-    e.preventDefault();
-    if (that.state.neuronas === 10) return;
-    that.state.neuronas++;
-    that.dispatchEvent({ type: '@neuronas/change' });
-};
-
-const handleRemove = that => e => {
-    e.preventDefault();
-    if (that.state.neuronas === 1) return;
-    that.state.neuronas--;
-    that.dispatchEvent({ type: '@neuronas/change' });
-};
-
 class Toolbar extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
-    constructor(props) {
-        super(props);
-        this.handleAdd = handleAdd(this);
-        this.handleRemove = handleRemove(this);
-    }
-
     render() {
         const { props } = this;
         return h(
-            'nav',
-            { 'class': 'navbar navbar-expand-lg navbar-dark bg-primary' },
+            "nav",
+            { "class": "navbar navbar-expand-lg navbar-dark bg-light-blue" },
             [h(
-                'a',
-                { 'class': 'navbar-brand', href: '#' },
+                "a",
+                { "class": "navbar-brand", href: "#" },
                 [props.state.title]
             ), h(
-                'button',
+                "button",
                 {
-                    'class': 'navbar-toggler',
-                    type: 'button', 'data-toggle': 'collapse',
-                    'data-target': '#navbarSupportedContent',
-                    'aria-controls': 'navbarSupportedContent',
-                    'aria-expanded': 'false',
-                    'aria-label': 'Toggle navigation' },
+                    "class": "navbar-toggler",
+                    type: "button", "data-toggle": "collapse",
+                    "data-target": "#navbarSupportedContent",
+                    "aria-controls": "navbarSupportedContent",
+                    "aria-expanded": "false",
+                    "aria-label": "Toggle navigation" },
                 [h(
-                    'span',
-                    { 'class': 'navbar-toggler-icon' },
+                    "span",
+                    { "class": "navbar-toggler-icon" },
                     []
                 )]
             ), h(
-                'div',
-                { 'class': 'collapse navbar-collapse', id: 'navbarSupportedContent' },
+                "div",
+                { "class": "collapse navbar-collapse", id: "navbarSupportedContent" },
                 [h(
-                    'ul',
-                    { 'class': 'navbar-nav mr-auto' },
+                    "ul",
+                    { "class": "navbar-nav ml-auto" },
                     [h(
-                        'li',
-                        { 'class': 'nav-item' },
+                        "li",
+                        { "class": "nav-item dropdown" },
                         [h(
-                            'a',
+                            "a",
                             {
-                                'class': 'nav-link', href: '',
-                                click: this.handleAdd },
-                            ['Agregar']
-                        )]
-                    ), h(
-                        'li',
-                        { 'class': 'nav-item' },
-                        [h(
-                            'a',
-                            {
-                                'class': 'nav-link', href: '',
-                                click: this.handleRemove },
-                            ['Eliminar']
-                        )]
-                    )]
-                ), h(
-                    'ul',
-                    { 'class': 'navbar-nav ml-auto' },
-                    [h(
-                        'li',
-                        { 'class': 'nav-item dropdown' },
-                        [h(
-                            'a',
-                            {
-                                'class': 'nav-link dropdown-toggle',
-                                href: '#', id: 'navbarDropdown',
-                                role: 'button',
-                                'data-toggle': 'dropdown',
-                                'aria-haspopup': 'true',
-                                'aria-expanded': 'false' },
-                            ['Dropdown']
+                                "class": "nav-link dropdown-toggle",
+                                href: "#", id: "navbarDropdown",
+                                role: "button",
+                                "data-toggle": "dropdown",
+                                "aria-haspopup": "true",
+                                "aria-expanded": "false" },
+                            ["Archivo"]
                         ), h(
-                            'div',
-                            { 'class': 'dropdown-menu dropdown-menu-right', 'aria-labelledby': 'navbarDropdown' },
+                            "div",
+                            { "class": "dropdown-menu dropdown-menu-right", "aria-labelledby": "navbarDropdown" },
                             [h(
-                                'a',
-                                { 'class': 'dropdown-item', href: '#', click: () => console.log('sd') },
-                                ['Action']
+                                "a",
+                                {
+                                    "class": "dropdown-item", href: "#",
+                                    click: () => console.log('sd') },
+                                ["Nuevo"]
                             ), h(
-                                'a',
-                                { 'class': 'dropdown-item', href: '#' },
-                                ['Another action']
+                                "a",
+                                {
+                                    "class": "dropdown-item", href: "#",
+                                    click: () => console.log('sd') },
+                                ["Guardar"]
                             ), h(
-                                'div',
-                                { 'class': 'dropdown-divider' },
-                                []
-                            ), h(
-                                'a',
-                                { 'class': 'dropdown-item', href: '#' },
-                                ['Something else here']
+                                "a",
+                                {
+                                    "class": "dropdown-item", href: "#",
+                                    click: () => console.log('sd') },
+                                ["Ejecutar"]
                             )]
                         )]
                     )]
@@ -310,42 +272,267 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 ;
 
 /***/ }),
-/* 9 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__index_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_classnames__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_classnames__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_scss__);
 
 
 
-class Body extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
+
+const neuronas = ["all_candidate_sampler", "atrous_conv2d", "atrous_conv2d_transpose", "avg_pool", "avg_pool3d", "batch_norm_with_global_normalization", "batch_normalization", "bias_add", "bidirectional_dynamic_rnn", "compute_accidental_hits", "conv1d", "conv2d", "conv2d_backprop_filter", "conv2d_backprop_input", "conv2d_transpose", "conv3d", "conv3d_backprop_filter_v2", "conv3d_transpose", "convolution", "crelu", "ctc_beam_search_decoder", "ctc_greedy_decoder", "ctc_loss", "depthwise_conv2d", "depthwise_conv2d_native", "depthwise_conv2d_native_backprop_filter", "depthwise_conv2d_native_backprop_input", "dilation2d", "dropout", "dynamic_rnn", "elu", "embedding_lookup", "embedding_lookup_sparse", "erosion2d", "fixed_unigram_candidate_sampler", "fractional_avg_pool", "fractional_max_pool", "fused_batch_norm", "in_top_k", "l2_loss", "l2_normalize", "leaky_relu", "learned_unigram_candidate_sampler", "local_response_normalization", "log_poisson_loss", "log_softmax", "log_uniform_candidate_sampler", "lrn", "max_pool", "max_pool3d", "max_pool_with_argmax", "moments", "nce_loss", "normalize_moments", "pool", "quantized_avg_pool", "quantized_conv2d", "quantized_max_pool", "quantized_relu_x", "raw_rnn", "relu", "relu6", "relu_layer", "sampled_softmax_loss", "selu", "separable_conv2d", "sigmoid", "softmax", "softplus", "softsign", "static_bidirectional_rnn", "static_rnn", "static_state_saving_rnn", "sufficient_statistics", "tanh", "top_k", "uniform_candidate_sampler", "weighted_moments", "with_space_to_batch", "xw_plus_b", "zero_fraction"];
+
+const handleTabChange = that => e => {
+    e.preventDefault();
+    that.salida = e.target.name === 'salida';
+    that.entrada = e.target.name === 'entrada';
+    that.update();
+};
+
+const handleAdd = that => e => {
+    e.preventDefault();
+    that.state.capas.push({ neuronas: 3 });
+    that.dispatchEvent({ type: '@neuronas/change' });
+};
+
+const handleRemove = that => e => {
+    e.preventDefault();
+    const index = e.target.dataset.tag;
+    if (that.state.capas.length === 1) return;
+    that.state.capas.splice(index, 1);
+    that.dispatchEvent({ type: '@neuronas/change' });
+};
+
+class Body extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
+    constructor(props) {
+        super(props);
+        this.entrada = true;
+        this.salida = false;
+        this.handleAdd = handleAdd(this);
+        this.renderForm = this.renderForm.bind(this);
+        this.handleRemove = handleRemove(this);
+        this.handleTabChange = handleTabChange(this);
+    }
     dispatch(action) {
         this.update();
     }
-    render() {
-        const length = this.state.neuronas;
-        const width = 100 / (length + 2) + '%';
-        const columns = [];
-        for (let index = 0; index < length; index++) {
-            columns.push(index);
+    handleNeuronasChange(capa) {
+        const that = this;
+        return ({ target: { value } }) => {
+            that.state.capas[capa].neuronas = value;
+        };
+    }
+    ready() {
+        const capas = this.state.capas.map((v, i) => h(
+            "div",
+            { "class": "card item", style: { display: 'inline-block' } },
+            [h(
+                "div",
+                { "class": "card-body" },
+                [h(
+                    "a",
+                    {
+                        style: { float: 'right' }, href: "", "data-tag": i,
+                        click: this.handleRemove },
+                    ["\xD7"]
+                ), h(
+                    "form",
+                    null,
+                    [h(
+                        "div",
+                        { "class": "form-group" },
+                        [h(
+                            "label",
+                            { style: { display: 'block' } },
+                            ["No. neuronas"]
+                        ), h(
+                            "input",
+                            {
+                                value: v.neuronas, type: "number",
+                                change: this.handleNeuronasChange(i) },
+                            []
+                        )]
+                    ), h(
+                        "div",
+                        { "class": "form-group" },
+                        [h(
+                            "label",
+                            { style: { display: 'block' } },
+                            ["Example select"]
+                        ), h(
+                            "select",
+                            { "class": "form-control" },
+                            [neuronas.map(v => h(
+                                "option",
+                                { value: v },
+                                [v]
+                            ))]
+                        )]
+                    )]
+                )]
+            )]
+        ));
+        capas.push(h(
+            "div",
+            { "class": "card item", style: {
+                    display: 'inline-block',
+                    height: '202px',
+                    width: '202px'
+                } },
+            [h(
+                "div",
+                { "class": "card-body",
+                    style: {
+                        'vertical-align': 'middle',
+                        'text-align': 'center'
+                    } },
+                [h(
+                    "button",
+                    {
+                        "class": "btn btn-primary",
+                        click: this.handleAdd,
+                        style: {
+                            'margin-top': '55px'
+                        } },
+                    ["Agregar"]
+                )]
+            )]
+        ));
+        const grid = new Muuri(this.grid, {
+            dragEnabled: true,
+            items: capas
+        });
+    }
+    renderForm() {
+        if (this.entrada) {
+            return h(
+                "form",
+                { "class": "px-4 py-3" },
+                [h(
+                    "div",
+                    { "class": "form-group" },
+                    [h(
+                        "label",
+                        null,
+                        ["Ruta"]
+                    ), h(
+                        "input",
+                        { type: "text", "class": "form-control" },
+                        []
+                    )]
+                ), h(
+                    "div",
+                    { "class": "form-group" },
+                    [h(
+                        "label",
+                        null,
+                        ["Learning rate"]
+                    ), h(
+                        "input",
+                        { type: "decimal", "class": "form-control" },
+                        []
+                    )]
+                ), h(
+                    "button",
+                    { type: "submit", "class": "btn btn-primary" },
+                    ["Actualizar"]
+                )]
+            );
         }
         return h(
-            'div',
-            { 'class': 'grid', style: { padding: '20px' } },
+            "form",
+            { "class": "px-4 py-3" },
             [h(
-                'div',
-                { 'class': 'column', style: { width } },
-                ['Entradas']
-            ), columns.map(v => h(
-                'div',
-                { 'class': 'column', style: { width } },
-                [v]
-            )), h(
-                'div',
-                { 'class': 'column', style: { width } },
-                ['Salida']
+                "div",
+                { "class": "form-group" },
+                [h(
+                    "label",
+                    null,
+                    ["No. neuronas"]
+                ), h(
+                    "input",
+                    {
+                        type: "decimal", "class": "form-control" },
+                    []
+                )]
+            ), h(
+                "div",
+                { "class": "form-group" },
+                [h(
+                    "label",
+                    null,
+                    ["Tipo de problema"]
+                ), h(
+                    "select",
+                    { "class": "form-control" },
+                    [h(
+                        "option",
+                        { value: "clasificacion" },
+                        ["Clasificacion"]
+                    ), h(
+                        "option",
+                        { value: "regresion" },
+                        ["Regresion"]
+                    )]
+                )]
+            ), h(
+                "button",
+                { type: "submit", "class": "btn btn-primary" },
+                ["Actualizar"]
+            )]
+        );
+    }
+    render() {
+        const salida = this.salida,
+              entrada = this.entrada;
+        return h(
+            "div",
+            { "class": "document" },
+            [h(
+                "div",
+                { "class": "content" },
+                [this.grid = h(
+                    "div",
+                    { "class": "grid" },
+                    []
+                )]
+            ), h(
+                "div",
+                { "class": "menu" },
+                [h(
+                    "ul",
+                    { "class": "nav nav-tabs" },
+                    [h(
+                        "li",
+                        { "class": "nav-item" },
+                        [h(
+                            "a",
+                            {
+                                href: "", click: this.handleTabChange, name: "entrada",
+                                "class": "nav-link " + __WEBPACK_IMPORTED_MODULE_0_classnames___default()({ active: entrada }) },
+                            ["Entrada"]
+                        )]
+                    ), h(
+                        "li",
+                        { "class": "nav-item" },
+                        [h(
+                            "a",
+                            {
+                                href: "", click: this.handleTabChange, name: "salida",
+                                "class": "nav-link " + __WEBPACK_IMPORTED_MODULE_0_classnames___default()({ active: salida }) },
+                            ["Salida"]
+                        )]
+                    )]
+                ), h(
+                    this.renderForm,
+                    null,
+                    []
+                )]
             )]
         );
     }
@@ -354,13 +541,67 @@ class Body extends __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */] {
 /* harmony default export */ __webpack_exports__["a"] = (Body);
 
 /***/ }),
-/* 10 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames() {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				classes.push(classNames.apply(null, arg));
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if (typeof module !== 'undefined' && module.exports) {
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {
+		window.classNames = classNames;
+	}
+})();
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(11);
+var content = __webpack_require__(7);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -368,7 +609,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(13)(content, options);
+var update = __webpack_require__(9)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -385,21 +626,21 @@ if(false) {
 }
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(12)(undefined);
+exports = module.exports = __webpack_require__(8)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".column {\n  display: inline-block;\n  border: 1px solid #CCC; }\n", ""]);
+exports.push([module.i, ".grid {\n  position: relative; }\n\n.item {\n  display: block;\n  position: absolute;\n  margin: 5px;\n  z-index: 1; }\n\n.item.muuri-item-dragging {\n  z-index: 3; }\n\n.item.muuri-item-releasing {\n  z-index: 2; }\n\n.item.muuri-item-hidden {\n  z-index: 0; }\n\n.item-content {\n  position: relative;\n  width: 100%;\n  height: 100%; }\n\n.menu {\n  display: inline-block;\n  padding: 5px; }\n\n.content {\n  display: 'inline-block';\n  flex: 1; }\n\n.document {\n  display: flex;\n  margin: 10px; }\n\n@media (max-width: 530px) {\n  .document {\n    display: block; }\n  .menu {\n    display: block; }\n  .content {\n    display: block;\n    flex: initial; } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /*
@@ -478,7 +719,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 13 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -534,7 +775,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(14);
+var	fixUrls = __webpack_require__(10);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -850,7 +1091,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports) {
 
 
@@ -943,15 +1184,7 @@ module.exports = function (css) {
 };
 
 /***/ }),
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -959,7 +1192,9 @@ module.exports = function (css) {
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     title: 'Neuronal',
-    neuronas: 4
+    capas: [{
+        neuronas: 4
+    }]
 });
 
 /***/ })

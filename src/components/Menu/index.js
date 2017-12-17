@@ -2,21 +2,33 @@
 
 export default function Menu() {
     return (
-        <nav id="navbar-example3" class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <nav class="nav nav-pills flex-column">
-                <a class="nav-link" href="#item-1">Item 1</a>
-                <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#item-1-1">Item 1-1</a>
-                    <a class="nav-link ml-3 my-1" href="#item-1-2">Item 1-2</a>
-                </nav>
-                <a class="nav-link" href="#item-2">Item2</a>
-                <a class="nav-link" href="#item-3">Item3</a>
-                <nav class="nav nav-pills flex-column">
-                    <a class="nav-link ml-3 my-1" href="#item-3-1">Item 3-1</a>
-                    <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
-                </nav>
-            </nav>
-        </nav>
+        <div style={{display: 'inline-block', padding: '10px'}}>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a
+                        href="" click={this.handleTabChange} name='entrada'
+                        class={"nav-link "+classnames({active: entrada})}>
+                        Entrada
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a
+                        href="" click={this.handleTabChange} name='salida'
+                        class={"nav-link "+classnames({active: salida})}>
+                        Salida
+                    </a>
+                </li>
+            </ul>
+            <form class="px-4 py-3">
+                <div class="form-group">
+                    <label>Learning rate</label>
+                    <input
+                        type="decimal" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Actualizar
+                </button>
+            </form>
+        </div>
     );
 };

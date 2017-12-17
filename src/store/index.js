@@ -2,5 +2,9 @@
 
 export default {
     title: 'Neuronal',
-    neuronas: 4
+    capas: [
+        {
+            neuronas: 4
+        }
+    ]
 }
