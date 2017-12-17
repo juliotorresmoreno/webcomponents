@@ -11,7 +11,7 @@ module.exports = {
     },
     plugins: [
         //new CleanWebpackPlugin(['build']),
-        new CopyWebpackPlugin([{ from: 'public/index.html', to: 'build/' }])
+        new CopyWebpackPlugin([{ from: 'public', to: 'build/' }])
     ],
     devServer: {
         contentBase: path.join(__dirname, "build"),

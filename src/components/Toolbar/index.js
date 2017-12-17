@@ -4,7 +4,7 @@ export default class Toolbar extends Core {
     render() {
         const {props} = this;
         return (
-            <nav class="navbar navbar-expand-lg navbar-dark bg-light-blue">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <a class="navbar-brand" href="#">
                     {props.state.title}
                 </a>
@@ -24,7 +24,7 @@ export default class Toolbar extends Core {
                             <a 
                                 class="nav-link dropdown-toggle" 
                                 href="#" id="navbarDropdown" 
-                                role="button" 
+                                role="button" style={{color: 'white'}}
                                 data-toggle="dropdown" 
                                 aria-haspopup="true" 
                                 aria-expanded="false">
