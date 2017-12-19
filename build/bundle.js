@@ -579,7 +579,6 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1__core__["a" /* default */] {
         };
     }
     ready() {
-        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => h(
             "div",
             { "class": "card item", style: { display: 'inline-block' } },

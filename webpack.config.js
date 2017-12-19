@@ -17,8 +17,16 @@ module.exports = {
             to: 'build/'
         }]),
         new CopyWebpackPlugin([{
-            from: 'public/js/h/index.js',
-            to: 'build/js/h'
+            from: 'public/js',
+            to: 'build/js/'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/vendor/h/index.js',
+            to: 'build/js/h.js'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/css',
+            to: 'build/css'
         }])
     ],
     devServer: {

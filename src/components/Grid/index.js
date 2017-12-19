@@ -33,7 +33,6 @@ class Grid extends Core {
         }
     }
     ready() {
-        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => (
             <div class="card item" style={{display: 'inline-block'}}>
                 <div class="card-body">
