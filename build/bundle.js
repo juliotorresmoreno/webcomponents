@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,17 +68,74 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__component__ = __webpack_require__(6);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__h__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__h___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__h__);
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__h___default.a; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__patch__ = __webpack_require__(1);
+/* unused harmony reexport patch */
+
 
 
 
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = patch;
+
+
+function patch(oldElement, newElement) {
+    if (oldElement === false || oldElement === null || oldElement === undefined) {
+        return newElement;
+    }
+    if (newElement === false || newElement === null || newElement === undefined) {
+        return oldElement;
+    }
+    if (oldElement.tagName !== newElement.tagName) {
+        oldElement.parentNode.replaceChild(newElement, oldElement);
+        return newElement;
+    }
+    if (oldElement !== undefined) {
+        for (let index = 0; index < newElement.attributes.length; index++) {
+            const element = newElement.attributes[index];
+            if (newElement.getAttribute(element.name) !== oldElement.getAttribute(element.name)) {
+                oldElement.setAttribute(element.name, element.value);
+            }
+        }
+        if (oldElement.tagName === "INPUT" && oldElement.value !== newElement.value) {
+            oldElement.value = newElement.value;
+        }
+        if (oldElement.childNodes.length > newElement.childNodes.length) {
+            for (let index = oldElement.childNodes.length - 1; index >= newElement.childNodes.length; index--) {
+                oldElement.removeChild(oldElement.childNodes[index]);
+            }
+        }
+        oldElement.listeners = newElement.listeners;
+        for (let index = newElement.childNodes.length - 1; index >= 0; index--) {
+            const newE = newElement.childNodes[index];
+            const oldE = oldElement.childNodes[index];
+            if (oldE === undefined) {
+                oldElement.appendChild(newE);
+            } else if (newE === undefined) {
+                oldElement.removeChild(oldE);
+            } else if (newE.nodeType === 3) {
+                if (oldE.data !== newE.data) {
+                    oldE.data = newE.data;
+                }
+            } else {
+                patch(oldE, newE);
+            }
+        }
+        return oldElement;
+    }
+}
+
+/***/ }),
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -228,7 +285,7 @@ class Menu extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component */
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -239,19 +296,19 @@ class Menu extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component */
 });
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_App__ = __webpack_require__(5);
 
 
 const app = new __WEBPACK_IMPORTED_MODULE_0__components_App__["a" /* default */]();
 app.apply(document.querySelector('#root'));
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -289,11 +346,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component */]
 ;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__patch__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__patch__ = __webpack_require__(1);
 
 
 let waiting = [];
@@ -385,112 +442,60 @@ class Component {
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = patch;
-
-
-function patch(oldElement, newElement) {
-    if (oldElement === false || oldElement === null || oldElement === undefined) {
-        return newElement;
-    }
-    if (newElement === false || newElement === null || newElement === undefined) {
-        return oldElement;
-    }
-    if (oldElement.tagName !== newElement.tagName) {
-        oldElement.parentNode.replaceChild(newElement, oldElement);
-        return newElement;
-    }
-    if (oldElement !== undefined) {
-        for (let index = 0; index < newElement.attributes.length; index++) {
-            const element = newElement.attributes[index];
-            if (newElement.getAttribute(element.name) !== oldElement.getAttribute(element.name)) {
-                oldElement.setAttribute(element.name, element.value);
-            }
-        }
-        if (oldElement.tagName === "INPUT" && oldElement.value !== newElement.value) {
-            oldElement.value = newElement.value;
-        }
-        if (oldElement.childNodes.length > newElement.childNodes.length) {
-            for (let index = oldElement.childNodes.length - 1; index >= newElement.childNodes.length; index--) {
-                oldElement.removeChild(oldElement.childNodes[index]);
-            }
-        }
-        oldElement.listeners = newElement.listeners;
-        for (let index = newElement.childNodes.length - 1; index >= 0; index--) {
-            const newE = newElement.childNodes[index];
-            const oldE = oldElement.childNodes[index];
-            if (oldE === undefined) {
-                oldElement.appendChild(newE);
-            } else if (newE === undefined) {
-                oldElement.removeChild(oldE);
-            } else if (newE.nodeType === 3) {
-                if (oldE.data !== newE.data) {
-                    oldE.data = newE.data;
-                }
-            } else {
-                patch(oldE, newE);
-            }
-        }
-        return oldElement;
-    }
-}
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-;(function () {
+;
+(function () {
 
-  function h() {
-    var args = [].slice.call(arguments),
-        e = null;
-    function item(l) {
+    function h() {
+        var args = [].slice.call(arguments),
+            e = null;
 
-      function parseClass(string) {
-        var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/);
-        m.forEach(function (v) {
-          var s = v.substring(1, v.length);
-          if (!v) return;
-          if (!e) e = document.createElement(v);else if (v[0] === '.') e.classList.add(s);else if (v[0] === '#') e.setAttribute('id', s);
-        });
-      }
+        function item(l) {
 
-      if (l == null) ;else if ('string' === typeof l) {
-        if (!e) parseClass(l);else e.appendChild(document.createTextNode(l));
-      } else if ('number' === typeof l || 'boolean' === typeof l || l instanceof Date || l instanceof RegExp) {
-        e.appendChild(document.createTextNode(l.toString()));
-      } else if (Array.isArray(l)) l.forEach(item);else if (l instanceof HTMLElement) e.appendChild(l);else if ('function' === typeof l) {
-        if (l.toString().indexOf('class') === 0) {
-          e = new l(args[0]).renderComponent();
-        } else {
-          e = l(args[0]);
+            function parseClass(string) {
+                var m = string.split(/([\.#]?[a-zA-Z0-9_-]+)/);
+                m.forEach(function (v) {
+                    var s = v.substring(1, v.length);
+                    if (!v) return;
+                    if (!e) e = document.createElement(v);else if (v[0] === '.') e.classList.add(s);else if (v[0] === '#') e.setAttribute('id', s);
+                });
+            }
+
+            if (l == null) ;else if ('string' === typeof l) {
+                if (!e) parseClass(l);else e.appendChild(document.createTextNode(l));
+            } else if ('number' === typeof l || 'boolean' === typeof l || l instanceof Date || l instanceof RegExp) {
+                e.appendChild(document.createTextNode(l.toString()));
+            } else if (Array.isArray(l)) l.forEach(item);else if (l instanceof HTMLElement) e.appendChild(l);else if ('function' === typeof l) {
+                if (l.toString().indexOf('class') === 0) {
+                    e = new l(args[0]).renderComponent();
+                } else {
+                    e = l(args[0]);
+                }
+            } else if ('object' === typeof l) {
+                for (var k in l) {
+                    if ('function' === typeof l[k]) {
+                        if (!e.listeners) e.listeners = {};
+                        let event = k;
+                        let obj = e;
+                        e.listeners[k] = l[event];
+                        e.addEventListener(k, (...args) => {
+                            if (typeof obj.listeners[event] === 'function') obj.listeners[event](...args);
+                        });
+                    } else if (k === 'style') {
+                        for (var s in l[k]) e.style.setProperty(s, l[k][s]);
+                    } else e.setAttribute(k, l[k]);
+                }
+            }
         }
-      } else if ('object' === typeof l) {
-        for (var k in l) {
-          if ('function' === typeof l[k]) {
-            if (!e.listeners) e.listeners = {};
-            let event = k;
-            let obj = e;
-            e.listeners[k] = l[event];
-            e.addEventListener(k, (...args) => {
-              if (typeof obj.listeners[event] === 'function') obj.listeners[event](...args);
-            });
-          } else if (k === 'style') {
-            for (var s in l[k]) e.style.setProperty(s, l[k][s]);
-          } else e.setAttribute(k, l[k]);
+        while (args.length) {
+            item(args.shift());
         }
-      }
+        return e;
     }
-    while (args.length) {
-      item(args.shift());
-    }
-    return e;
-  }
 
-  if (true) module.exports = h;else this.h = h;
+    if (true) module.exports = h;else this.h = h;
 })();
 
 /***/ }),
@@ -581,7 +586,7 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_insensitive__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_Menu__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_Menu__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_Grid__ = __webpack_require__(11);
 
 
@@ -666,13 +671,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Menu__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Menu__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_insensitive__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_scss__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__neuronas__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__neuronas___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__neuronas__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_actions__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_actions__ = __webpack_require__(3);
 
 
 
@@ -687,8 +692,8 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1_insensitive__["a" /* Component */
         this.subscribe = {
             [__WEBPACK_IMPORTED_MODULE_4_actions__["a" /* default */].neuronas.change]: true
         };
+        this.vDOM = false;
         that = this;
-        that.vDOM = false;
     }
     handleAdd() {
         that.services.neuronal.add();
@@ -709,7 +714,6 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1_insensitive__["a" /* Component */
         };
     }
     ready() {
-        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => Object(__WEBPACK_IMPORTED_MODULE_1_insensitive__["b" /* h */])(
             "div",
             { "class": "card item", style: { display: 'inline-block' } },
@@ -792,7 +796,7 @@ class Grid extends __WEBPACK_IMPORTED_MODULE_1_insensitive__["a" /* Component */
                 )]
             )]
         ));
-        const grid = new Muuri(that.grid, {
+        const grid = new Muuri(this.grid, {
             dragEnabled: false,
             items: capas
         });
@@ -1412,19 +1416,22 @@ module.exports = ["all_candidate_sampler","atrous_conv2d","atrous_conv2d_transpo
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = Services;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_insensitive__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_services_neuronal__ = __webpack_require__(19);
 
 
 
-function Services() {
-    return [Object(__WEBPACK_IMPORTED_MODULE_0_insensitive__["b" /* h */])(
-        __WEBPACK_IMPORTED_MODULE_1_services_neuronal__["a" /* default */],
-        null,
-        []
-    )];
+class Services extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component */] {
+    render() {
+        return Object(__WEBPACK_IMPORTED_MODULE_0_insensitive__["b" /* h */])(
+            __WEBPACK_IMPORTED_MODULE_1_services_neuronal__["a" /* default */],
+            null,
+            []
+        );
+    }
 }
+/* harmony export (immutable) */ __webpack_exports__["a"] = Services;
+
 
 /***/ }),
 /* 19 */
@@ -1432,15 +1439,15 @@ function Services() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_insensitive__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__actions__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_actions__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_store__ = __webpack_require__(20);
 
 
 
 
 class Neuronal extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Component */] {
     constructor(props) {
-        super(props, __WEBPACK_IMPORTED_MODULE_2__store__["a" /* default */]);
+        super(props, __WEBPACK_IMPORTED_MODULE_2_store__["a" /* default */]);
         this.services.neuronal = this;
     }
 
@@ -1450,7 +1457,7 @@ class Neuronal extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Componen
             algoritmo: ''
         });
         this.dispatchEvent({
-            types: [__WEBPACK_IMPORTED_MODULE_1__actions__["a" /* default */].neuronas.change]
+            types: [__WEBPACK_IMPORTED_MODULE_1_actions__["a" /* default */].neuronas.change]
         });
     }
 
@@ -1458,7 +1465,7 @@ class Neuronal extends __WEBPACK_IMPORTED_MODULE_0_insensitive__["a" /* Componen
         if (this.state.capas.length === 1) return;
         this.state.capas.splice(index, 1);
         this.dispatchEvent({
-            types: [__WEBPACK_IMPORTED_MODULE_1__actions__["a" /* default */].neuronas.change]
+            types: [__WEBPACK_IMPORTED_MODULE_1_actions__["a" /* default */].neuronas.change]
         });
     }
 

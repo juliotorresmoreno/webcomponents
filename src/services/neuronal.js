@@ -1,6 +1,6 @@
 import { Component, h } from "insensitive";
-import actions from "../actions";
-import state from "../store";
+import actions from "actions";
+import state from "store";
 
 class Neuronal extends Component {
     constructor(props) {

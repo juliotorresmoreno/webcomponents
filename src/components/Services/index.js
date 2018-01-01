@@ -1,8 +1,8 @@
-import { h } from "insensitive";
+import { Component, h } from "insensitive";
 import Neuronal from "services/neuronal";
 
-export default function Services() {
-    return [
-        <Neuronal />
-    ];
+export default class Services extends Component {
+    render() {
+        return <Neuronal />;
+    }
 }

@@ -1,6 +1,6 @@
 import { Component, h } from "insensitive";
-import Menu from "components//Menu";
-import Grid from "components//Grid";
+import Menu from "components/Menu";
+import Grid from "components/Grid";
 
 class Body extends Component {
     render() {

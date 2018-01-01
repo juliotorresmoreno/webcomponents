@@ -55,24 +55,14 @@ module.exports = {
                 test: /(\.js|\.jsx)$/,
                 loader: "babel-loader",
                 query: {
+                    presets: [
+                        'es2017', 'stage-3'
+                    ],
                     plugins: [
                         ["transform-h-jsx"],
                         ["syntax-jsx"]
                     ]
                 }
-            },
-            {
-                test: /\.ts$/,
-                use: [{
-                    loader: 'babel-loader'
-                }, {
-                    loader: 'virtual-dom-loader?jsx=h'
-                }, {
-                    loader: 'ts-loader',
-                    options: {
-                        configFile: "./tsconfig.server.json"
-                    }
-                }],
             }
         ]
     },

@@ -12,8 +12,8 @@ class Grid extends Component {
         this.subscribe = {
             [actions.neuronas.change]: true
         };
+        this.vDOM = false;
         that = this;
-        that.vDOM = false;
     }
     handleAdd() {
         that.services.neuronal.add();
@@ -34,7 +34,6 @@ class Grid extends Component {
         }
     }
     ready() {
-        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => (
             <div class="card item" style={{display: 'inline-block'}}>
                 <div class="card-body">
@@ -97,7 +96,7 @@ class Grid extends Component {
                 </div>
             </div>
         );
-        const grid = new Muuri(that.grid, {
+        const grid = new Muuri(this.grid, {
             dragEnabled: false,
             items: capas
         });
