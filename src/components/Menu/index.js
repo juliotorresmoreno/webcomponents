@@ -1,4 +1,4 @@
-import Core from "../../core";
+import { Component, h } from "insensitive";
 import classnames from "classnames";
 
 const handleTabChange = (that) => (e) => {
@@ -8,7 +8,7 @@ const handleTabChange = (that) => (e) => {
     that.update();
 }
 
-export default class Menu extends Core {
+export default class Menu extends Component {
     constructor(props) {
         super(props);
         this.entrada = true;
@@ -28,7 +28,7 @@ export default class Menu extends Core {
                         <label>Learning rate</label>
                         <input type="decimal" class="form-control" />
                     </div>
-                    <button type="submit" class="btn btn-primary">
+                    <button click={() => alert("Hello world")} type="button" class="btn btn-primary">
                         Actualizar
                     </button>
                 </form>
@@ -48,7 +48,7 @@ export default class Menu extends Core {
                         <option value='regresion'>Regresion</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button click={() => alert("Hola mundo")} type="button" class="btn btn-primary">
                     Actualizar
                 </button>
             </form>

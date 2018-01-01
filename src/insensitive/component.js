@@ -1,3 +1,4 @@
+import patch from './patch';
 
 let waiting = [];
 let elements = [];
@@ -26,13 +27,15 @@ const dispatchEvent = (action) => {
 const services = {};
 const state = {};
 
-export default class Core {
-    constructor(props, newState = {}) {
+
+export default class Component {
+    constructor(props = {}, newState = {}) {
         for (const key in newState) {
             if (newState.hasOwnProperty(key)) {
                 state[key] = newState[key];
             }
         }
+        this.vDOM = true;
         this.state = state;
         this.props = props;
         this.services = services;
@@ -55,7 +58,7 @@ export default class Core {
         }
     }
     apply(element) {
-        element.appendChild(this.renderComponent());
+        patch(element, this.renderComponent());
         ready();
     }
     dispatch() {
@@ -66,20 +69,29 @@ export default class Core {
     }
     update() {
         if (document.body === this.DOM || document.body.contains(this.DOM)) {
-            const newTree = this.render();
-            this.DOM.parentNode.replaceChild(newTree, this.DOM);
-            this.DOM = newTree;
+            const newElement = this.render();
+            if (this.vDOM)
+                this.DOM = patch(this.DOM, newElement);
+            else {
+                this.DOM.parentNode.replaceChild(newElement, this.DOM);
+                this.DOM = newElement;
+            }
             this.ready();
         }
     }
     updateElement(oldElement, newElement) {
         if (document.body === this.DOM || document.body.contains(this.DOM)) {
-            oldElement.parentNode.replaceChild(newElement, this.DOM);
+            if (this.vDOM)
+                this.DOM = patch(oldElement, newElement);
+            else
+                oldElement.parentNode.replaceChild(newElement, this.DOM);
             this.ready();
         }
     }
     renderComponent() {
         this.componentWillMount();
+        if (this.vDOM)
+            return this.DOM = patch(this.DOM, this.render());
         return this.DOM = this.render();
     }
     render() {

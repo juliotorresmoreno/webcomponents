@@ -1,18 +1,19 @@
 import Menu from "../Menu";
-import Core from "../../core";
+import { Component, h } from "insensitive";
 import './index.scss';
 import neuronas from "./neuronas";
-import actions from "../../actions";
+import actions from "actions";
 
 let that;
 
-class Grid extends Core {
+class Grid extends Component {
     constructor(props) {
         super(props);
         this.subscribe = {
             [actions.neuronas.change]: true
         };
         that = this;
+        that.vDOM = false;
     }
     handleAdd() {
         that.services.neuronal.add();
@@ -24,21 +25,22 @@ class Grid extends Core {
     }
     handleNeuronasChange(capa) {
         return ({target: {value}}) => {
-            that.services.neuronal.neuronasUpdate(capa, value);
+            this.services.neuronal.neuronasUpdate(capa, value);
         }
     }
     handleAlgoritmoChange(capa) {
         return ({target: {value}}) => {
-            that.services.neuronal.algoritmoUpdate(capa, value);
+            this.services.neuronal.algoritmoUpdate(capa, value);
         }
     }
     ready() {
+        console.log(this.state.capas);
         const capas = this.state.capas.map((v, i) => (
             <div class="card item" style={{display: 'inline-block'}}>
                 <div class="card-body">
                     <a 
                         style={{float: 'right'}} href='' data-tag={i}
-                        click={this.handleRemove}>
+                        click={that.handleRemove}>
                         &times;
                     </a>
                     <form>
@@ -49,7 +51,7 @@ class Grid extends Core {
                             <input 
                                 class="form-control" min={1}
                                 value={v.neuronas} type='number'
-                                change={this.handleNeuronasChange(i)} />
+                                change={that.handleNeuronasChange(i)} />
                         </div>
                         <div class="form-group">
                             <label style={{display: 'block'}}>
@@ -57,9 +59,15 @@ class Grid extends Core {
                             </label>
                             <select
                                 class="form-control" value={v.algoritmo}
-                                change={this.handleAlgoritmoChange(i)}>
-                                {neuronas.map((v) => (
-                                    <option value={v}>{v}</option>
+                                change={that.handleAlgoritmoChange(i)}>
+                                {neuronas.map((value) => (
+                                    v.algoritmo === value ?
+                                    <option selected value={value}>
+                                        {value}
+                                    </option>:
+                                    <option value={value}>
+                                        {value}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -80,7 +88,7 @@ class Grid extends Core {
                     }}>
                     <button
                         class="btn btn-primary"
-                        click={this.handleAdd}
+                        click={that.handleAdd}
                         style={{
                             'margin-top': '55px'
                         }}>
@@ -89,7 +97,7 @@ class Grid extends Core {
                 </div>
             </div>
         );
-        const grid = new Muuri(this.grid, {
+        const grid = new Muuri(that.grid, {
             dragEnabled: false,
             items: capas
         });

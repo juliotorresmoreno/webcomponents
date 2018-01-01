@@ -21,10 +21,6 @@ module.exports = {
             to: 'build/js/'
         }]),
         new CopyWebpackPlugin([{
-            from: 'public/vendor/h/index.js',
-            to: 'build/js/h.js'
-        }]),
-        new CopyWebpackPlugin([{
             from: 'public/css',
             to: 'build/css'
         }])
@@ -36,6 +32,9 @@ module.exports = {
         clientLogLevel: "none",
         historyApiFallback: true,
         watchContentBase: true
+    },
+    resolve: {
+        modules: ["node_modules", "src"]
     },
     module: {
         loaders: [{

@@ -1,6 +1,6 @@
-import Core from "../../core";
+import { Component, h } from "insensitive";
 
-export default class Toolbar extends Core {    
+export default class Toolbar extends Component {    
     render() {
         return (
             <nav class="navbar navbar-expand-lg navbar-dark bg-primary">

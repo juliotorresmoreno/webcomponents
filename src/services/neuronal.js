@@ -1,8 +1,8 @@
-import Core from "../core";
+import { Component, h } from "insensitive";
 import actions from "../actions";
 import state from "../store";
 
-class Neuronal extends Core {
+class Neuronal extends Component {
     constructor(props) {
         super(props, state);
         this.services.neuronal = this;
