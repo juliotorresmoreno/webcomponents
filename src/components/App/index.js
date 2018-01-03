@@ -1,16 +1,16 @@
-import { Component, h } from "insensitive";
+import { Component, h, Route } from "insensitive";
 import Toolbar from 'components/Toolbar';
-import Body from 'components/Body';
-import Services from 'components/Services';
+import Home from 'pages/Home';
+import Footer from 'components/Footer';
 
 export default class App extends Component {
     render() {
         return (
             <div class="">
-                <Services />
-
                 <Toolbar />
-                <Body />
+                <Route path={/^\/$/} component={Home} />
+
+                <Footer />
             </div>
         );
     }

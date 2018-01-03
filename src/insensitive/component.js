@@ -29,7 +29,7 @@ const state = {};
 
 
 export default class Component {
-    constructor(props = {}, newState = {}) {
+    constructor(props, newState = {}) {
         for (const key in newState) {
             if (newState.hasOwnProperty(key)) {
                 state[key] = newState[key];
@@ -37,7 +37,7 @@ export default class Component {
         }
         this.vDOM = true;
         this.state = state;
-        this.props = props;
+        this.props = props || {};
         this.services = services;
         this.subscribe = {};
         waiting.push(this);

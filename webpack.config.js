@@ -23,6 +23,18 @@ module.exports = {
         new CopyWebpackPlugin([{
             from: 'public/css',
             to: 'build/css'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/icons',
+            to: 'build/icons'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/fonts',
+            to: 'build/fonts'
+        }]),
+        new CopyWebpackPlugin([{
+            from: 'public/images',
+            to: 'build/images'
         }])
     ],
     devServer: {

@@ -6,8 +6,7 @@ class Body extends Component {
     render() {
         return (
             <div class='document'>
-                <Grid />
-                <Menu />
+                
             </div>
         );
     };
