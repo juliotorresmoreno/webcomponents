@@ -16,7 +16,7 @@ const technologies = [
 
 export default () => {
     return (
-        <div>
+        <div id='tecnologies'>
             <div className="row">
                 <div className="col-lg-12">
                     <h3>¿Que tecnologías manejamos?</h3>

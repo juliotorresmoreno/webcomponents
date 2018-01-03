@@ -71,7 +71,7 @@ const products = [
 
 export default () => {
     return (
-        <div>
+        <div id='services'>
             <div class="row">
                 {products.map((v, i) => (
                     <div key={i} class="col-lg-4">

@@ -8,9 +8,17 @@ const ready = () => {
         const element = waiting.shift();
         if (document.body === element.DOM || document.body.contains(element.DOM)) {
             element.ready();
-            elements.push(element);
+            elements.push(element);  
         } else {
             rest.push(element);
+        }
+    }
+    for (let i = elements.length - 1; i >= 0; i--) {
+        const element = elements[i];
+        if (!document.body.contains(element.DOM)) {
+            element.componentWillMount();
+            elements.splice(i, 1);
+            element.componentDidMount();
         }
     }
     waiting = rest;
@@ -26,6 +34,7 @@ const dispatchEvent = (action) => {
 
 const services = {};
 const state = {};
+const events = [];
 
 
 export default class Component {
@@ -46,6 +55,17 @@ export default class Component {
 
     }
     componentWillMount() {
+
+    }
+    begin() {
+        events.splice(0, events.length);
+    }
+    commit() {
+        const event = {
+            types: events.map((v) => v.type),
+            events: events
+        }
+        dispatchEvent(event);
     }
     compareAndRefresc(action) {
         if (Object.keys(this.subscribe) === 0)
@@ -65,7 +85,7 @@ export default class Component {
 
     }
     dispatchEvent(action) {
-        dispatchEvent(action);
+        events.push(event);
     }
     update() {
         if (document.body === this.DOM || document.body.contains(this.DOM)) {
